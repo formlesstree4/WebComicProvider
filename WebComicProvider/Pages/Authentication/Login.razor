@@ -1,0 +1,72 @@
+﻿@page "/login"
+@using Microsoft.AspNetCore.WebUtilities
+@using WebComicProvider.Models.User
+@using WebComicProvider.Services
+
+@inject NavigationManager navigationManager
+@inject WcpAuthenticationService authenticationService
+
+<div class="wrapper fadeInDown">
+  <div id="formContent">
+
+    <!-- Login Form -->
+    <EditForm OnValidSubmit="OnSubmit" Model="loginRequest">
+      <DataAnnotationsValidator />
+      <InputText type="text" class="fadeIn first" name="username" placeholder="username" @bind-Value="@loginRequest.UserName"/>
+      <ValidationMessage For="@(() => loginRequest.UserName)" />
+
+      <InputText type="password" class="fadeIn second" name="password" placeholder="password" @bind-Value="@loginRequest.Password"/>
+      <ValidationMessage For="@(() => loginRequest.Password)" />
+
+      <input type="submit" class="fadeIn fourth" value="Log In">
+    </EditForm>
+
+    <!-- Register Link -->
+    <div id="formFooter" class="fadeIn fourth">
+      <NavLink href="register">
+        <h6 class="font-weight-normal text-center">Need an account? Click here to register</h6>
+      </NavLink>
+    </div>
+
+  </div>
+</div>
+
+@code{
+    UserLoginRequest loginRequest { get; set; } = new();
+
+    string returnUrl { get; set; } = "/";
+
+    string error { get; set; }
+
+    protected override void OnInitialized()
+    {
+        var uri = navigationManager.ToAbsoluteUri(navigationManager.Uri);
+        var queryStrings = QueryHelpers.ParseQuery(uri.Query);
+        if(queryStrings.TryGetValue("returnUrl", out var _r))
+        {
+            returnUrl = _r;
+        }
+        base.OnInitialized();
+    }
+
+
+    async Task OnSubmit()
+    {
+        error = null;
+        try
+        {
+            if (await authenticationService.Authenticate(loginRequest))
+            {
+                navigationManager.NavigateTo(returnUrl);
+            }
+            else
+            {
+                error = "Invalid Credentials";
+            }
+        }
+        catch (Exception ex)
+        {
+            error = ex.Message;
+        }
+    }
+}

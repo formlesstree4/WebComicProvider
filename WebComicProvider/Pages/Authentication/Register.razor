@@ -1,0 +1,62 @@
+﻿@page "/register"
+
+@using WebComicProvider.Models.User
+@using WebComicProvider.Services
+
+@inject NavigationManager navigationManager
+@inject WcpAuthenticationService authenticationService
+
+<div class="wrapper fadeInDown">
+  <div id="formContent">
+
+    <!-- Login Form -->
+    <EditForm OnValidSubmit="OnSubmit" Model="registerRequest">
+      <DataAnnotationsValidator />
+      <InputText type="text" class="fadeIn first" name="username" placeholder="username" @bind-Value="@registerRequest.UserName"/>
+      <ValidationMessage For="@(() => registerRequest.UserName)" />
+
+      <InputText type="password" class="fadeIn second" name="password" placeholder="password" @bind-Value="@registerRequest.Password"/>
+      <ValidationMessage For="@(() => registerRequest.Password)" />
+
+      <InputText type="password" class="fadeIn third" name="pass_confirm" placeholder="confirm" @bind-Value="@registerRequest.PasswordConfirm"/>
+      <ValidationMessage For="@(() => registerRequest.PasswordConfirm)" />
+
+      <InputText type="email" class="fadeIn third" name="email" placeholder="email" @bind-Value="@registerRequest.Email"/>
+      <ValidationMessage For="@(() => registerRequest.Email)" />
+
+      <input type="submit" class="fadeIn fourth" value="Register">
+    </EditForm>
+
+    <!-- Register Link -->
+    <div id="formFooter" class="fadeIn fourth">
+      <NavLink href="login">
+        <h6 class="font-weight-normal text-center">Already have an account? Click here to login</h6>
+      </NavLink>
+    </div>
+
+  </div>
+</div>
+
+@functions{
+    UserRegisterRequest registerRequest { get; set; } = new();
+    string error { get; set; }
+    async Task OnSubmit()
+    {
+        error = null;
+        try
+        {
+            if (await authenticationService.Register(registerRequest))
+            {
+                navigationManager.NavigateTo("/");
+            }
+            else
+            {
+                error = "Something went wrong processing your registration. Please try again";
+            }
+        }
+        catch (Exception ex)
+        {
+            error = ex.Message;
+        }
+    }
+}

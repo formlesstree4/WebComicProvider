@@ -3,7 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32228.430
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebComicProvider", "WebComicProvider\WebComicProvider.csproj", "{D57FCA9D-1B33-4721-A194-04F022B7D4DE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebComicProvider", "WebComicProvider\WebComicProvider.csproj", "{D57FCA9D-1B33-4721-A194-04F022B7D4DE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebComicProviderApi", "WebComicProviderApi\WebComicProviderApi.csproj", "{335979E4-E68D-4260-A693-B704870D1BCB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebComicProvider.Models", "WebComicProvider.Models\WebComicProvider.Models.csproj", "{DFE3ED72-1BFF-41A3-9E1A-CA0C43C25FCE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebComicProvider.Domain", "WebComicProvider.Domain\WebComicProvider.Domain.csproj", "{5813252A-4895-412E-9164-9210E2F34558}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebComicProvider.Interfaces", "WebComicProvider.Interfaces\WebComicProvider.Interfaces.csproj", "{6ACD138E-68DA-42B7-A8B9-BA0EC147AFBC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebComicProvider.Domain.Repositories", "WebComicProvider.Domain.Repositories\WebComicProvider.Domain.Repositories.csproj", "{FDDF7E0E-E602-4E2C-93CB-7256153BC511}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebComicProvider.Domain.Repositories.Interfaces", "WebComicProvider.Domain.Repositories.Interfaces\WebComicProvider.Domain.Repositories.Interfaces.csproj", "{D1B23850-CF80-448E-8767-33CDE678E403}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +27,30 @@ Global
 		{D57FCA9D-1B33-4721-A194-04F022B7D4DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D57FCA9D-1B33-4721-A194-04F022B7D4DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D57FCA9D-1B33-4721-A194-04F022B7D4DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{335979E4-E68D-4260-A693-B704870D1BCB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{335979E4-E68D-4260-A693-B704870D1BCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{335979E4-E68D-4260-A693-B704870D1BCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{335979E4-E68D-4260-A693-B704870D1BCB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DFE3ED72-1BFF-41A3-9E1A-CA0C43C25FCE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFE3ED72-1BFF-41A3-9E1A-CA0C43C25FCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DFE3ED72-1BFF-41A3-9E1A-CA0C43C25FCE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DFE3ED72-1BFF-41A3-9E1A-CA0C43C25FCE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5813252A-4895-412E-9164-9210E2F34558}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5813252A-4895-412E-9164-9210E2F34558}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5813252A-4895-412E-9164-9210E2F34558}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5813252A-4895-412E-9164-9210E2F34558}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6ACD138E-68DA-42B7-A8B9-BA0EC147AFBC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6ACD138E-68DA-42B7-A8B9-BA0EC147AFBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6ACD138E-68DA-42B7-A8B9-BA0EC147AFBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6ACD138E-68DA-42B7-A8B9-BA0EC147AFBC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FDDF7E0E-E602-4E2C-93CB-7256153BC511}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FDDF7E0E-E602-4E2C-93CB-7256153BC511}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FDDF7E0E-E602-4E2C-93CB-7256153BC511}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FDDF7E0E-E602-4E2C-93CB-7256153BC511}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1B23850-CF80-448E-8767-33CDE678E403}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1B23850-CF80-448E-8767-33CDE678E403}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1B23850-CF80-448E-8767-33CDE678E403}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1B23850-CF80-448E-8767-33CDE678E403}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
