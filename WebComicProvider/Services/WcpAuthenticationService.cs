@@ -31,10 +31,13 @@ namespace WebComicProvider.Services
                 return false;
 
             var result = (await loginResponse.Content.ReadAsStringAsync()).FromJson<UserLoginResponse>();
-
+            if (result is null)
+            {
+                return false;
+            }
 
             await _localStorage.SetItemAsync("authToken", result.Token);
-            ((WcpAuthenticationStateProvider)_authStateProvider).NotifyUserAuthentication(request.UserName);
+            ((WcpAuthenticationStateProvider)_authStateProvider).NotifyUserAuthentication(result.Token);
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", result.Token);
             return true;
 
