@@ -55,9 +55,9 @@ namespace WebComicProvider.Domain.Repositories.Users
             await transaction.CommitAsync();
         }
 
-        public async Task UpdateUser(UserModel user, IEnumerable<RoleModel> roles)
+        public Task UpdateUser(UserModel user, IEnumerable<RoleModel> roles)
         {
-
+            throw new NotImplementedException();
         }
 
     }
