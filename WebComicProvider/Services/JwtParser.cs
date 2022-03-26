@@ -13,8 +13,11 @@ namespace WebComicProvider.Services
             var jsonBytes = ParseBase64WithoutPadding(payload);
 
             var keyValuePairs = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonBytes);
-
-            claims.AddRange(keyValuePairs.Select(kvp => new Claim(kvp.Key, kvp.Value.ToString())));
+            if (keyValuePairs is null)
+            {
+                return Enumerable.Empty<Claim>();
+            }
+            claims.AddRange(keyValuePairs.Select(kvp => new Claim(kvp.Key, kvp.Value?.ToString() ?? "")));
 
             return claims;
         }

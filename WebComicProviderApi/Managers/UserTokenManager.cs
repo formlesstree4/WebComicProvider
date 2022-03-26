@@ -33,8 +33,8 @@ namespace WebComicProviderApi.Managers
             if (currentSession is not null)
             {
                 currentSession.Token = newToken;
+                await CreateSession(user, currentSession);
             }
-            await CreateSession(user, currentSession);
         }
 
         public async Task ExpireSession(string user)

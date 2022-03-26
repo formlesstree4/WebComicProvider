@@ -78,7 +78,12 @@ namespace WebComicProviderApi.Controllers
         [HttpDelete]
         public async Task<IActionResult> Logout()
         {
-            await userTokenManager.ExpireSession(User.GetUsername());
+            var username = User.GetUsername();
+            if (username is null)
+            {
+                return BadRequest();
+            }
+            await userTokenManager.ExpireSession(username);
             return Ok();
         }
 

@@ -46,6 +46,12 @@ namespace WebComicProviderApi
                         var name = jwtToken.GetUsername();
                         var token = jwtToken.RawData;
 
+                        if (name is null)
+                        {
+                            context.Fail(new Exception("Invalid or Expired Token"));
+                            return;
+                        }
+
                         var sessionData = await tokenManager.GetSession(name);
                         if (sessionData is not null && !sessionData.Token.Equals(token))
                         {
@@ -65,11 +71,10 @@ namespace WebComicProviderApi
                             context.ErrorDescription = "This request requires a valid JWT access token to be provided";
 
                         // Add some extra context for expired tokens.
-                        if (context.AuthenticateFailure != null && context.AuthenticateFailure.GetType() == typeof(SecurityTokenExpiredException))
+                        if (context.AuthenticateFailure != null && context.AuthenticateFailure is SecurityTokenExpiredException authenticationException)
                         {
-                            var authenticationException = context.AuthenticateFailure as SecurityTokenExpiredException;
                             context.Response.Headers.Add("x-token-expired", authenticationException.Expires.ToString("o"));
-                            context.ErrorDescription = $"The token expired on {authenticationException.Expires.ToString("o")}";
+                            context.ErrorDescription = $"The token expired on {authenticationException.Expires:o}";
                         }
 
                         return context.Response.WriteAsync(JsonSerializer.Serialize(new

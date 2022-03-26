@@ -30,5 +30,4 @@ builder.Services.AddAuthorizationCore();
 //    // For more information, see https://aka.ms/blazor-standalone-auth
 //    builder.Configuration.Bind("Google", options.ProviderOptions);
 //});
-
 await builder.Build().RunAsync();

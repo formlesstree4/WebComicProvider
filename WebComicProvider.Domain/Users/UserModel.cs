@@ -9,6 +9,8 @@
         string Email,
         int Iterations)
     {
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
         public UserModel() : this(default, default, default, default, default, default, default) { }
+#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
     };
 }
