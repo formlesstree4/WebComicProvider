@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Npgsql;
+using System.Data;
+using System.Data.SqlClient;
 
 namespace WebComicProvider.Domain.Repositories
 {
@@ -33,13 +34,14 @@ namespace WebComicProvider.Domain.Repositories
         /// <param name="configuration"></param>
         /// <param name="logger"></param>
         /// <param name="repoName"></param>
-        public SqlRepository(IConfiguration configuration, ILogger<T> logger, string repoName)
+        public SqlRepository(IConfiguration configuration, ILogger<T> logger)
         {
             connectionString = configuration.GetConnectionString("Main");
             Logger = logger;
-            RepositoryName = repoName;
+            RepositoryName = nameof(T);
         }
 
-        public NpgsqlConnection GetConnection() => new(connectionString);
+        public SqlConnection GetConnection() => new(connectionString);
+
     }
 }

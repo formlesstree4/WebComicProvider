@@ -32,11 +32,19 @@ namespace WebComicProviderApi.Managers
             {
                 return badAuthResponse;
             }
+
+            // iterations check
+            if (userData.Item1.Iterations != DEFAULT_ITERATIONS)
+            {
+                await RehashPassword(request, userData.Item1);
+            }
+
             var userSession = new UserSession
             {
-                Username = request.UserName,
+                Username = GetProperUsername(userData.Item1),
+                Email = userData.Item1.EmailAddress,
+                ImageUrl = userData.Item1.ProfileUrl,
                 UserRoles = userData.Item2.Select(c => c.Name).ToList(),
-                Email = userData.Item1.Email
             };
             return (true, userSession);
         }
@@ -44,12 +52,12 @@ namespace WebComicProviderApi.Managers
         public async Task<UserRegistrationResult> RegisterUser(UserRegisterRequest request)
         {
             var hashSet = HashPassword(request.Password);
-            var userModel = new UserModel(0, request.UserName, request.UserName, hashSet.Password, hashSet.Salt, request.Email, DEFAULT_ITERATIONS);
+            var userModel = new UserModel(0, request.UserName, request.UserName, hashSet.Password, hashSet.Salt, request.Email, DEFAULT_ITERATIONS, "");
             var roles = new List<RoleModel>();
             try
             {
                 await repository.CreateUser(userModel, roles);
-                return new UserRegistrationResult(true, ""); ;
+                return new UserRegistrationResult(true, "");
             }
             catch (Exception ex)
             {
@@ -58,6 +66,12 @@ namespace WebComicProviderApi.Managers
         }
 
 
+        private async Task RehashPassword(UserLoginRequest request, UserModel userModel)
+        {
+            var newPasswordHashSet = HashPassword(request.Password, userModel.Salt);
+
+        }
+
         private static bool ValidatePassword(string passwordToValidate, byte[] targetPassword, byte[] salt, int iterations)
         {
             var pbkdf2 = new Rfc2898DeriveBytes(passwordToValidate, salt, iterations);
@@ -65,15 +79,20 @@ namespace WebComicProviderApi.Managers
             return result.SequenceEqual(targetPassword);
         }
 
-        private static PasswordHashSet HashPassword(string password)
+        private static PasswordHashSet HashPassword(string password, byte[]? existingSalt = null)
         {
-            var salt = CreatePasswordSalt();
+            var salt = existingSalt ?? CreatePasswordSalt();
             var hasher = new Rfc2898DeriveBytes(password, salt, DEFAULT_ITERATIONS);
             var hash = hasher.GetBytes(PASSWORD_LENGTH);
             return new PasswordHashSet(salt, hash);
         }
 
         private static byte[] CreatePasswordSalt() => RandomNumberGenerator.GetBytes(SALT_LENGTH);
+
+        private static string GetProperUsername(UserModel userModel)
+        {
+            return string.IsNullOrWhiteSpace(userModel.Display) ? userModel.Username : userModel.Display;
+        }
 
     }
 

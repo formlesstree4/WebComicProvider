@@ -27,7 +27,6 @@ namespace WebComicProviderApi.Controllers
         }
 
 
-        
 
         [HttpPost, AllowAnonymous]
         public async Task<IActionResult> Authenticate([FromBody] UserLoginRequest loginRequest)
@@ -54,6 +53,20 @@ namespace WebComicProviderApi.Controllers
         {
             var result = await userManager.RegisterUser(registerRequest);
             return result.Success ? Ok(result) : BadRequest(result.ErrorMessage);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Profile()
+        {
+            var username = User.GetUsername();
+            if (username is null) return BadRequest();
+            return Ok(await userTokenManager.GetSession(username));
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Profile([FromBody] UserSession profile)
+        {
+            return Problem(statusCode: StatusCodes.Status501NotImplemented);
         }
 
         [HttpGet]
