@@ -10,4 +10,8 @@
     <ProjectReference Include="..\WebComicProvider.Domain\WebComicProvider.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Comics\" />
+  </ItemGroup>
+
 </Project>

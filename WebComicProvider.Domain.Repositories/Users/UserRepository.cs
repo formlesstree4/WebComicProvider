@@ -57,28 +57,17 @@ namespace WebComicProvider.Domain.Repositories.Users
 
         public async Task UpdateUser(UserModel user, IEnumerable<RoleModel> roles)
         {
-            //using var connection = GetConnection();
-            //await connection.OpenAsync();
-            //using var transaction = await connection.BeginTransactionAsync();
-            //await connection.ExecuteAsync("UPDATE \"User\" SET \"Display\" = @display_name, \"ImageUrl\" = @image_url WHERE \"ID\" = @id ", new
-            //{
-            //    id = user.ID,
-            //    display_name = user.Display,
-            //    image_url = user.ImageUrl
-            //}, transaction);
-            //await connection.ExecuteAsync("DELETE FROM \"UserRoles\" WHERE \"UserId\" = @user_id ", new
-            //{
-            //    user_id = user.ID
-            //}, transaction);
-            //foreach(var role in roles)
-            //{
-            //    await connection.ExecuteAsync("INSERT INTO \"UserRoles\" (\"UserId\", \"RoleId\") VALUES (@user_id, @role_id)", new
-            //    {
-            //        user_id = user.ID,
-            //        role_id = role.ID,
-            //    }, transaction);
-            //}    
-            //await transaction.CommitAsync();
+            using var connection = GetConnection();
+            await connection.OpenAsync();
+            using var transaction = await connection.BeginTransactionAsync();
+            await connection.ExecuteAsync("spUpdateUserDetails", new
+            {
+                userId = user.ID,
+                displayName = user.Display,
+                email = user.EmailAddress,
+                profileUrl = user.ProfileUrl
+            }, transaction, commandType: System.Data.CommandType.StoredProcedure);
+            await transaction.CommitAsync();
         }
 
         public async Task UpdateUserPassword(int userId, byte[] password, byte[] salt, int iterations)
