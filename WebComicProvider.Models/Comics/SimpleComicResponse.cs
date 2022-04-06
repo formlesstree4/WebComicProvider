@@ -4,7 +4,7 @@ namespace WebComicProvider.Models.Comics
 {
     public sealed class SimpleComicResponse
     {
-        [JsonPropertyName("comicId")]
+        [JsonPropertyName("id")]
         public int ComicId { get; set; }
 
         [JsonPropertyName("author")]
