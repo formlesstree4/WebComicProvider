@@ -7,8 +7,9 @@
         string? ToolTip,
         string? Commentary,
         int Status,
-        DateTimeOffset ReleaseDate)
+        DateTimeOffset ReleaseDate,
+        int Number)
     {
-        public PageModel() : this(default, default, default, default, default, default, default) { }
+        public PageModel() : this(default, default, default, default, default, default, default, default) { }
     }
 }

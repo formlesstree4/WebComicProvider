@@ -3,7 +3,7 @@ using WebComicProvider.Interfaces;
 using WebComicProvider.Models;
 using WebComicProvider.Models.User;
 
-namespace WebComicProviderApi.Managers
+namespace WebComicProviderApi.Managers.Users
 {
     public sealed class UserTokenManager : IUserTokenManager
     {

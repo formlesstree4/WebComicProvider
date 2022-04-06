@@ -1,14 +1,17 @@
 ﻿namespace WebComicProvider.Domain.Comics
 {
-    internal sealed record ComicModel(
+    public sealed record ComicModel(
         int ID,
         string Name,
         string Description,
         int CreatedBy,
         DateTimeOffset CreatedOn,
         DateTimeOffset UpdatedOn,
-        int Status)
+        int Status,
+        string Cover,
+        int Issues,
+        int Pages)
     {
-        public ComicModel() : this(default, string.Empty, string.Empty, default, default, default, default) { }
+        public ComicModel() : this(default, string.Empty, string.Empty, default, default, default, default, string.Empty, default, default) { }
     }
 }

@@ -1,9 +1,12 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using WebComicProvider.Domain.Repositories.Comics;
+using WebComicProvider.Domain.Repositories.Interfaces;
 using WebComicProvider.Domain.Repositories.Interfaces.Users;
 using WebComicProvider.Domain.Repositories.Users;
 using WebComicProvider.Interfaces;
 using WebComicProviderApi;
-using WebComicProviderApi.Managers;
+using WebComicProviderApi.Managers.Comics;
+using WebComicProviderApi.Managers.Users;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,9 +24,11 @@ builder.Services.AddStackExchangeRedisCache(options =>
 // Register Managers
 builder.Services.AddScoped<IUserManager, UserManager>();
 builder.Services.AddScoped<IUserTokenManager, UserTokenManager>();
+builder.Services.AddScoped<IComicsManager, ComicsManager>();
 
 // Register Repositories
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IComicRepository, ComicRepository>();
 
 // build this early
 var sp = builder.Services.BuildServiceProvider();

@@ -20,4 +20,10 @@
     <ProjectReference Include="..\WebComicProvider.Models\WebComicProvider.Models.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Files\images.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

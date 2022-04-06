@@ -13,17 +13,19 @@ namespace WebComicProviderApi.Controllers
     [ApiController]
     [Route("api/[controller]/[action]")]
     [Authorize]
-    public class UserController : ControllerBase
+    public class UserController : BaseController
     {
         private readonly IConfiguration configuration;
         private readonly IUserManager userManager;
         private readonly IUserTokenManager userTokenManager;
+        private readonly ILogger<UserController> logger;
 
-        public UserController(IConfiguration configuration, IUserManager userManager, IUserTokenManager userTokenManager)
+        public UserController(IConfiguration configuration, IUserManager userManager, IUserTokenManager userTokenManager, ILogger<UserController> logger)
         {
             this.configuration = configuration;
             this.userManager = userManager;
             this.userTokenManager = userTokenManager;
+            this.logger = logger;
         }
 
 

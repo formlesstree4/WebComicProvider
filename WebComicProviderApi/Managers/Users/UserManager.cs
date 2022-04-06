@@ -4,7 +4,7 @@ using WebComicProvider.Domain.Users;
 using WebComicProvider.Interfaces;
 using WebComicProvider.Models.User;
 
-namespace WebComicProviderApi.Managers
+namespace WebComicProviderApi.Managers.Users
 {
     public sealed class UserManager : IUserManager
     {
