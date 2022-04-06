@@ -16,7 +16,7 @@ namespace WebComicProvider.Models.Comics
         [JsonPropertyName("description")]
         public string IssueDescription { get; set; } = string.Empty;
 
-        [JsonPropertyName("pageCount")]
-        public int Pages { get; set; }
+        [JsonPropertyName("pages")]
+        public IEnumerable<ComicPage> Pages { get; set; } = Enumerable.Empty<ComicPage>();
     }
 }

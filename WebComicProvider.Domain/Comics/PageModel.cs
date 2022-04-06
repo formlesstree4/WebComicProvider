@@ -8,8 +8,9 @@
         string? Commentary,
         int Status,
         DateTimeOffset ReleaseDate,
-        int Number)
+        int Number,
+        string? Location)
     {
-        public PageModel() : this(default, default, default, default, default, default, default, default) { }
+        public PageModel() : this(default, default, default, default, default, default, default, default, default) { }
     }
 }
