@@ -68,7 +68,7 @@ namespace WebComicProviderApi.Controllers
         [HttpPut]
         public async Task<IActionResult> Profile([FromBody] UserSession profile)
         {
-            return Problem(statusCode: StatusCodes.Status501NotImplemented);
+            return await Task.FromResult(NotImplemented());
         }
 
         [HttpGet]

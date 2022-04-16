@@ -68,8 +68,9 @@ namespace WebComicProviderApi.Managers.Users
 
         private async Task RehashPassword(UserLoginRequest request, UserModel userModel)
         {
-            var newPasswordHashSet = HashPassword(request.Password, userModel.Salt);
-
+            var newSalt = CreatePasswordSalt();
+            var newPasswordHashSet = HashPassword(request.Password, newSalt);
+            await repository.UpdateUserPassword(userModel.ID, newPasswordHashSet.Password, newSalt, DEFAULT_ITERATIONS);
         }
 
         private static bool ValidatePassword(string passwordToValidate, byte[] targetPassword, byte[] salt, int iterations)
