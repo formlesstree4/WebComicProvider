@@ -66,7 +66,7 @@ namespace WebComicProviderApi.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Profile([FromBody] UserSession profile)
+        public async Task<IActionResult> Profile([FromBody] UpdateUserProfileRequest profile)
         {
             return await Task.FromResult(NotImplemented());
         }
