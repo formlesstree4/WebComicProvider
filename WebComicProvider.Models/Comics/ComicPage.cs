@@ -11,16 +11,16 @@ namespace WebComicProvider.Models.Comics
         public int PageNumber { get; set; }
 
         [JsonPropertyName("title")]
-        public string Title { get; set; } = string.Empty;
+        public string? Title { get; set; } = string.Empty;
 
         [JsonPropertyName("tooltip")]
-        public string ToolTip { get; set; } = string.Empty;
+        public string? ToolTip { get; set; } = string.Empty;
 
         [JsonPropertyName("commentary")]
-        public string Commentary { get; set; } = string.Empty;
+        public string? Commentary { get; set; } = string.Empty;
 
         [JsonPropertyName("location")]
-        public string Location { get; set; } = string.Empty;
+        public string? Location { get; set; } = string.Empty;
 
         [JsonPropertyName("published")]
         public DateTimeOffset PublishDate { get; set; }
