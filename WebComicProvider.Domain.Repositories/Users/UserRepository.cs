@@ -12,7 +12,28 @@ namespace WebComicProvider.Domain.Repositories.Users
         public UserRepository(IConfiguration configuration, ILogger<UserRepository> logger) : base(configuration, logger)
         {
         }
-
+        public async Task<(UserModel?, IEnumerable<RoleModel>?)> Get(int userId)
+        {
+            using var connection = GetConnection();
+            await connection.OpenAsync();
+            using var transaction = await connection.BeginTransactionAsync();
+            try
+            {
+                using var userAndRoles = await connection.QueryMultipleAsync("spGetUserAndRolesById", new { userId }, transaction, commandType: System.Data.CommandType.StoredProcedure);
+                var user = await userAndRoles.ReadSingleOrDefaultAsync<UserModel>();
+                if (user is not null)
+                {
+                    var roles = await userAndRoles.ReadAsync<RoleModel>();
+                    return (user, roles);
+                }
+            }
+            catch (SqlException ex)
+            {
+                Logger.LogError(ex, "There was an error querying the database");
+                throw;
+            }
+            return (null, null);
+        }
         public async Task<(UserModel?, IEnumerable<RoleModel>?)> Get(string username)
         {
             using var connection = GetConnection();
@@ -68,6 +89,7 @@ namespace WebComicProvider.Domain.Repositories.Users
                 profileUrl = user.ProfileUrl
             }, transaction, commandType: System.Data.CommandType.StoredProcedure);
             await transaction.CommitAsync();
+            if (roles is null) return;
         }
 
         public async Task UpdateUserPassword(int userId, byte[] password, byte[] salt, int iterations)
