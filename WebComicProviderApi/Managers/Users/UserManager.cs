@@ -44,7 +44,8 @@ namespace WebComicProviderApi.Managers.Users
                 Username = GetProperUsername(userData.Item1),
                 Email = userData.Item1.EmailAddress,
                 ImageUrl = userData.Item1.ProfileUrl,
-                UserRoles = userData.Item2.Select(c => c.Name).ToList(),
+                UserId = userData.Item1.ID,
+                UserRoles = userData.Item2.Select(c => c.Name).ToList()
             };
             return (true, userSession);
         }
@@ -63,6 +64,53 @@ namespace WebComicProviderApi.Managers.Users
             {
                 return new UserRegistrationResult(false, ex.Message);
             }
+        }
+
+        public async Task UpdateUser(int userId, UpdateUserProfileRequest request)
+        {
+            await repository.UpdateUser(new UserModel(
+                userId,
+                string.Empty,
+                request.DisplayName,
+                Array.Empty<byte>(),
+                Array.Empty<byte>(),
+                request.EmailAddress,
+                -1,
+                request.ProfileUrl), Array.Empty<RoleModel>());
+        }
+
+        public async Task<UserDetails?> Get(int userId)
+        {
+            var userData = await repository.Get(userId);
+            if (userData is (null, _) || userData is (_, null))
+            {
+                return null;
+            }
+            return new UserDetails
+            {
+                Username = GetProperUsername(userData.Item1),
+                Email = userData.Item1.EmailAddress,
+                ImageUrl = userData.Item1.ProfileUrl,
+                UserId = userData.Item1.ID,
+                UserRoles = userData.Item2.Select(c => c.Name).ToList()
+            };
+        }
+
+        public async Task<UserDetails?> Get(string username)
+        {
+            var userData = await repository.Get(username);
+            if (userData is (null, _) || userData is (_, null))
+            {
+                return null;
+            }
+            return new UserDetails
+            {
+                Username = GetProperUsername(userData.Item1),
+                Email = userData.Item1.EmailAddress,
+                ImageUrl = userData.Item1.ProfileUrl,
+                UserId = userData.Item1.ID,
+                UserRoles = userData.Item2.Select(c => c.Name).ToList()
+            };
         }
 
 
