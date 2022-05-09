@@ -13,7 +13,7 @@ namespace WebComicProviderApi.Controllers
     [ApiController]
     [Route("api/[controller]/[action]")]
     [Authorize]
-    public class UserController : BaseController
+    public sealed class UserController : WebComicProviderApiControllerBase
     {
         private readonly IConfiguration configuration;
         private readonly IUserManager userManager;
@@ -66,9 +66,9 @@ namespace WebComicProviderApi.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Profile([FromBody] UpdateUserProfileRequest profile)
+        public IActionResult Profile([FromBody] UpdateUserProfileRequest profile)
         {
-            return await Task.FromResult(NotImplemented());
+            return NotImplemented();
         }
 
         [HttpGet]

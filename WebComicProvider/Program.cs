@@ -20,6 +20,7 @@ builder.Services.AddScoped(sp =>
 builder.Services.AddScoped<WcpAuthenticationService>();
 builder.Services.AddScoped<WcpAuthenticationStateProvider>();
 builder.Services.AddScoped<AuthenticationStateProvider>(s => s.GetRequiredService<WcpAuthenticationStateProvider>());
+builder.Services.AddScoped<ApiCommunicationService>();
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddAuthorizationCore();
 

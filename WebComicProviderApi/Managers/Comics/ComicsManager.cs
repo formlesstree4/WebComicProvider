@@ -49,28 +49,28 @@ namespace WebComicProviderApi.Managers.Comics
                     Issues = comicDetails.Item1.Issues
                 },
                 Issues = comicDetails.Item2
-                .Where(issue => issue.Key.ReleaseDate <= DateTimeOffset.Now)
-                .OrderBy(issue => issue.Key.Number)
-                .Select(issue => new ComicIssue
-                {
-                    IssueDescription = issue.Key.Synopsis,
-                    IssueId = issue.Key.ID,
-                    IssueName = issue.Key.Name,
-                    IssueNumber = issue.Key.Number,
-                    Pages = issue.Value
-                    .Where(page => page.ReleaseDate <= DateTimeOffset.Now)
-                    .OrderBy(page => page.Number)
-                    .Select(page => new ComicPage
+                    .Where(issue => issue.Key.ReleaseDate <= DateTimeOffset.Now)
+                    .OrderBy(issue => issue.Key.Number)
+                    .Select(issue => new ComicIssue
                     {
-                        Commentary = page.Commentary,
-                        Location = page.Location,
-                        PageId = page.ID,
-                        PageNumber = page.Number,
-                        PublishDate = page.ReleaseDate,
-                        Title = page.Title,
-                        ToolTip = page.ToolTip
+                        IssueDescription = issue.Key.Synopsis,
+                        IssueId = issue.Key.ID,
+                        IssueName = issue.Key.Name,
+                        IssueNumber = issue.Key.Number,
+                        Pages = issue.Value
+                        .Where(page => page.ReleaseDate <= DateTimeOffset.Now)
+                        .OrderBy(page => page.Number)
+                        .Select(page => new ComicPage
+                        {
+                            Commentary = page.Commentary,
+                            Location = page.Location,
+                            PageId = page.ID,
+                            PageNumber = page.Number,
+                            PublishDate = page.ReleaseDate,
+                            Title = page.Title,
+                            ToolTip = page.ToolTip
+                        })
                     })
-                })
             };
         }
         

@@ -6,7 +6,7 @@ using WebComicProvider.Services;
 
 namespace WebComicProvider.Authentication
 {
-    public class WcpAuthenticationStateProvider : AuthenticationStateProvider
+    public sealed class WcpAuthenticationStateProvider : AuthenticationStateProvider
     {
         private const string TOKEN_NAME = "authToken";
         private const string AUTH_HEADER = "bearer";

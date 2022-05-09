@@ -2,7 +2,7 @@
 
 namespace WebComicProviderApi.Controllers
 {
-    public abstract class BaseController : ControllerBase
+    public abstract class WebComicProviderApiControllerBase : ControllerBase
     {
         public IActionResult NotImplemented(string message = "") => Problem(statusCode: StatusCodes.Status501NotImplemented, detail: message);
 

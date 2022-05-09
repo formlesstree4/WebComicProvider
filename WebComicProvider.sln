@@ -11,11 +11,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebComicProvider.Models", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebComicProvider.Domain", "WebComicProvider.Domain\WebComicProvider.Domain.csproj", "{5813252A-4895-412E-9164-9210E2F34558}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebComicProvider.Interfaces", "WebComicProvider.Interfaces\WebComicProvider.Interfaces.csproj", "{6ACD138E-68DA-42B7-A8B9-BA0EC147AFBC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebComicProvider.Interfaces", "WebComicProvider.Interfaces\WebComicProvider.Interfaces.csproj", "{6ACD138E-68DA-42B7-A8B9-BA0EC147AFBC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebComicProvider.Domain.Repositories", "WebComicProvider.Domain.Repositories\WebComicProvider.Domain.Repositories.csproj", "{FDDF7E0E-E602-4E2C-93CB-7256153BC511}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebComicProvider.Domain.Repositories", "WebComicProvider.Domain.Repositories\WebComicProvider.Domain.Repositories.csproj", "{FDDF7E0E-E602-4E2C-93CB-7256153BC511}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebComicProvider.Domain.Repositories.Interfaces", "WebComicProvider.Domain.Repositories.Interfaces\WebComicProvider.Domain.Repositories.Interfaces.csproj", "{D1B23850-CF80-448E-8767-33CDE678E403}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebComicProvider.Domain.Repositories.Interfaces", "WebComicProvider.Domain.Repositories.Interfaces\WebComicProvider.Domain.Repositories.Interfaces.csproj", "{D1B23850-CF80-448E-8767-33CDE678E403}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
