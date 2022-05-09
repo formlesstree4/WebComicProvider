@@ -16,11 +16,7 @@ namespace WebComicProvider.Services
         }
 
 
-
-
-
-
-
+        #region User Stuff
         public async Task<(bool, UserLoginResponse?)> PostAuthentication(UserLoginRequest request)
         {
             var content = request.ToJson();
@@ -30,7 +26,6 @@ namespace WebComicProvider.Services
             var result = (await loginResponse.Content.ReadAsStringAsync()).FromJson<UserLoginResponse>();
             return (true, result);
         }
-
 
         public async Task<(bool, UserRegistrationResult?)> PostRegistration(UserRegisterRequest request)
         {
@@ -46,7 +41,10 @@ namespace WebComicProvider.Services
         {
             await httpClient.DeleteAsync("api/User/Logout");
         }
+        #endregion User Stuff
 
+
+        #region Comics
         public async Task<IEnumerable<SimpleComicResponse>> GetComics()
         {
             var comicsResponse = await httpClient.GetAsync("api/Comics");
@@ -61,7 +59,7 @@ namespace WebComicProvider.Services
             var response = (await comicsResponse.Content.ReadAsStringAsync()).FromJson<ComplexComicResponse>();
             return (true, response);
         }
-
+        #endregion Comics
 
 
         public void SetBearerToken(string token)

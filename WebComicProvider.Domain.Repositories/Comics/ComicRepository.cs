@@ -28,7 +28,7 @@ namespace WebComicProvider.Domain.Repositories.Comics
             using var connection = GetConnection();
             await connection.OpenAsync();
             using var transaction = await connection.BeginTransactionAsync();
-            var results = await connection.QueryMultipleAsync("spGetFullComicDetails", new { comicId }, transaction, commandType: System.Data.CommandType.StoredProcedure);
+            using var results = await connection.QueryMultipleAsync("spGetFullComicDetails", new { comicId }, transaction, commandType: System.Data.CommandType.StoredProcedure);
             var comic = await results.ReadFirstOrDefaultAsync<ComicModel>();
             if (comic is null) return blank;
             var issues = await results.ReadAsync<IssueModel>();

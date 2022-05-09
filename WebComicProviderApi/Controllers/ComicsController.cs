@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using WebComicProvider.Interfaces;
 
 namespace WebComicProviderApi.Controllers
 {
 
-    [ApiController]
-    [Route("api/[controller]/[action]")]
+    [ApiController, AllowAnonymous]
+    [Route("api/[controller]")]
     public class ComicsController : WebComicProviderApiControllerBase
     {
         private readonly IComicsManager comicsManager;
@@ -23,7 +24,7 @@ namespace WebComicProviderApi.Controllers
             return Ok(await comicsManager.GetAllComics());
         }
 
-        [HttpGet("{id:int}")]
+        [HttpGet("{comicId:int}")]
         public async Task<IActionResult> GetComicDetails(int comicId)
         {
             return Ok(await comicsManager.GetComicDetails(comicId));
