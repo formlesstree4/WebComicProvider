@@ -1,6 +1,7 @@
 ﻿using System.Net.Http.Headers;
 using System.Text;
 using WebComicProvider.Models;
+using WebComicProvider.Models.Comics;
 using WebComicProvider.Models.User;
 
 namespace WebComicProvider.Services
@@ -45,6 +46,22 @@ namespace WebComicProvider.Services
         {
             await httpClient.DeleteAsync("api/User/Logout");
         }
+
+        public async Task<IEnumerable<SimpleComicResponse>> GetComics()
+        {
+            var comicsResponse = await httpClient.GetAsync("api/Comics");
+            if (!comicsResponse.IsSuccessStatusCode) return Enumerable.Empty<SimpleComicResponse>(); ;
+            return (await comicsResponse.Content.ReadAsStringAsync())?.FromJson<IEnumerable<SimpleComicResponse>>() ?? Enumerable.Empty<SimpleComicResponse>();
+        }
+
+        public async Task<(bool, ComplexComicResponse?)> GetComic(int comicId)
+        {
+            var comicsResponse = await httpClient.GetAsync($"api/Comics/{comicId}");
+            if (!comicsResponse.IsSuccessStatusCode) return (false, null);
+            var response = (await comicsResponse.Content.ReadAsStringAsync()).FromJson<ComplexComicResponse>();
+            return (true, response);
+        }
+
 
 
         public void SetBearerToken(string token)
