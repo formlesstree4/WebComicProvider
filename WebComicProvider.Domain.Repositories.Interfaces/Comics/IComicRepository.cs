@@ -12,6 +12,13 @@ namespace WebComicProvider.Domain.Repositories.Interfaces
         Task<(ComicModel, Dictionary<IssueModel, IEnumerable<PageModel>>)> Get(int comicId);
 
         /// <summary>
+        /// Gets only the metadata of a particular comic
+        /// </summary>
+        /// <param name="comicId">The ID of the comic</param>
+        /// <returns><see cref="ComicModel"/></returns>
+        Task<ComicModel> GetComic(int comicId);
+
+        /// <summary>
         /// Gets all the comics available
         /// </summary>
         /// <returns>A collection of comic book entities</returns>

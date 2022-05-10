@@ -37,7 +37,12 @@ namespace WebComicProvider.Domain.Repositories.Comics
             return (comic, issuesAndPages);
         }
 
-
-
+        public async Task<ComicModel> GetComic(int comicId)
+        {
+            using var connection = GetConnection();
+            await connection.OpenAsync();
+            using var transaction = await connection.BeginTransactionAsync();
+            return await connection.QueryFirstAsync<ComicModel>("spGetComicDetails", new { comicId }, transaction, commandType: System.Data.CommandType.StoredProcedure);
+        }
     }
 }
