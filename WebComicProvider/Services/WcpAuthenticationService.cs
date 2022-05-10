@@ -35,11 +35,12 @@ namespace WebComicProvider.Services
 
         }
 
-        public async Task<bool> Register(UserRegisterRequest request)
+        public async Task<(bool, string)> Register(UserRegisterRequest request)
         {
             var (success, registrationResponse) = await apiService.PostRegistration(request);
-            if (!success || registrationResponse is null) return false;
-            return await Authenticate(new UserLoginRequest { UserName = request.UserName, Password = request.Password });
+            if (!success) return (false, registrationResponse.ErrorMessage);
+            var authentication = await Authenticate(new UserLoginRequest { UserName = request.UserName, Password = request.Password });
+            return (authentication, authentication ? "" : "An issue occurred authenticating, please try again");
         }
 
         public async Task Logout()

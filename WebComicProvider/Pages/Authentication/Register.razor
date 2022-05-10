@@ -45,13 +45,14 @@
         error = null;
         try
         {
-            if (await authenticationService.Register(registerRequest))
+            var registrationResult = await authenticationService.Register(registerRequest);
+            if (registrationResult.Item1)
             {
                 navigationManager.NavigateTo("/");
             }
             else
             {
-                error = "Something went wrong processing your registration. Please try again";
+                error = registrationResult.Item2;
             }
         }
         catch (Exception ex)

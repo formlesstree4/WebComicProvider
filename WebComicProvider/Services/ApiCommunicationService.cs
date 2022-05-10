@@ -27,13 +27,21 @@ namespace WebComicProvider.Services
             return (true, result);
         }
 
-        public async Task<(bool, UserRegistrationResult?)> PostRegistration(UserRegisterRequest request)
+        public async Task<(bool, UserRegistrationResult)> PostRegistration(UserRegisterRequest request)
         {
             var content = request.ToJson();
             var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");
             var loginResponse = await httpClient.PostAsync("api/User/Register", bodyContent);
-            if (!loginResponse.IsSuccessStatusCode) return (false, null);
-            var responsePayload = (await loginResponse.Content.ReadAsStringAsync()).FromJson<UserRegistrationResult>();
+            UserRegistrationResult responsePayload;
+            if (!loginResponse.IsSuccessStatusCode)
+            {
+                var responseContent = await loginResponse.Content.ReadAsStringAsync();
+                responsePayload = new UserRegistrationResult(false, responseContent);
+            }
+            else
+            {
+                responsePayload = (await loginResponse.Content.ReadAsStringAsync()).FromJson<UserRegistrationResult>();
+            }
             return (responsePayload.Success, responsePayload);
         }
 
