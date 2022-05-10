@@ -1,10 +1,12 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http.Features;
 using WebComicProvider.Domain.Repositories.Comics;
 using WebComicProvider.Domain.Repositories.Interfaces;
 using WebComicProvider.Domain.Repositories.Interfaces.Users;
 using WebComicProvider.Domain.Repositories.Users;
 using WebComicProvider.Interfaces;
 using WebComicProviderApi;
+using WebComicProviderApi.Managers;
 using WebComicProviderApi.Managers.Comics;
 using WebComicProviderApi.Managers.Users;
 
@@ -25,7 +27,13 @@ builder.Services.AddStackExchangeRedisCache(options =>
 var sp = builder.Services.BuildServiceProvider();
 #pragma warning restore ASP0000 // Do not call 'IServiceCollection.BuildServiceProvider' in 'ConfigureServices'
 
-
+builder.Services.Configure<FormOptions>(o =>
+{
+    o.ValueLengthLimit = int.MaxValue;
+    o.MultipartBodyLengthLimit = int.MaxValue;
+    o.MultipartBoundaryLengthLimit = int.MaxValue;
+    o.MemoryBufferThreshold = int.MaxValue;
+});
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -33,6 +41,18 @@ builder.Services.AddScoped<IUserManager, UserManager>();
 builder.Services.AddScoped<IComicsManager, ComicsManager>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IComicRepository, ComicRepository>();
+
+// add some image managers...
+builder.Services.AddScoped<LocalImageManager>();
+
+builder.Services.AddScoped<IImageManager>(m =>
+{
+    return m.GetRequiredService<IConfiguration>()["Storage:Mode"].ToLowerInvariant() switch
+    {
+        "local" => m.GetRequiredService<LocalImageManager>(),
+        _ => throw new ArgumentException("Invalid Storage Mode Type"),
+    };
+});
 
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
