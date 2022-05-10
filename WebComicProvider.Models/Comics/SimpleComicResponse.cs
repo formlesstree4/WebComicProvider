@@ -22,6 +22,9 @@ namespace WebComicProvider.Models.Comics
         [JsonPropertyName("pageCount")]
         public int TotalPages { get; set; }
 
+        [JsonPropertyName("cover")]
+        public string Cover { get; set; } = string.Empty;
+
         [JsonPropertyName("created")]
         public DateTimeOffset CreatedOn { get; set; }
 
