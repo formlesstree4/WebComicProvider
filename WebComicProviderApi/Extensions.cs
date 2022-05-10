@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using WebComicProvider.Interfaces;
@@ -114,6 +115,22 @@ namespace WebComicProviderApi
         {
             return new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret));
         }
+
+
+
+        public static Task DeleteAsync(string path) => Task.Run(() => { File.Delete(path); });
+
+        public static Task<FileStream> CreateAsync(string path) => Task.Run(() => File.Create(path));
+
+        public static Task MoveAsync(string sourceFileName, string destFileName) => Task.Run(() => { File.Move(sourceFileName, destFileName); });
+
+        public static Task<byte[]> CalculateImageHashBytes(Stream image)
+        {
+            using var hasher = SHA512.Create();
+            return Task.Run(() => hasher.ComputeHash(image));
+        }
+
+        public static string BytesToString(this byte[] b) => Encoding.UTF8.GetString(b);
 
     }
 }
