@@ -8,11 +8,13 @@ namespace WebComicProviderApi.Managers.Comics
     {
         private readonly IComicRepository comicRepository;
         private readonly IUserManager userManager;
+        private readonly IWebHostEnvironment environment;
 
-        public ComicsManager(IComicRepository comicRepository, IUserManager userManager)
+        public ComicsManager(IComicRepository comicRepository, IUserManager userManager, IWebHostEnvironment environment)
         {
             this.comicRepository = comicRepository;
             this.userManager = userManager;
+            this.environment = environment;
         }
 
 
@@ -23,10 +25,27 @@ namespace WebComicProviderApi.Managers.Comics
             {
                 ComicId = c.ID,
                 ComicName = c.Name,
+                Cover = c.Cover,
                 Issues = c.Issues,
                 Synopsis = c.Description,
                 TotalPages = c.Pages
             });
+        }
+
+        public async Task<SimpleComicResponse> GetSimpleComicDetails(int comicId)
+        {
+            var comicDetails = await comicRepository.GetComic(comicId);
+            return new SimpleComicResponse
+            {
+                ComicId = comicDetails.ID,
+                ComicName = comicDetails.Name,
+                Cover = comicDetails.Cover,
+                CreatedOn = comicDetails.CreatedOn,
+                Synopsis = comicDetails.Description,
+                TotalPages = comicDetails.Pages,
+                UpdatedOn = comicDetails.UpdatedOn,
+                Issues = comicDetails.Issues
+            };
         }
 
         public async Task<ComplexComicResponse> GetComicDetails(int comicId)
@@ -42,6 +61,7 @@ namespace WebComicProviderApi.Managers.Comics
                     Author = creator.Username,
                     ComicId = comicDetails.Item1.ID,
                     ComicName = comicDetails.Item1.Name,
+                    Cover = comicDetails.Item1.Cover,
                     CreatedOn = comicDetails.Item1.CreatedOn,
                     Synopsis = comicDetails.Item1.Description,
                     TotalPages = comicDetails.Item1.Pages,
@@ -74,6 +94,57 @@ namespace WebComicProviderApi.Managers.Comics
             };
         }
         
+
+
+        public async Task<SimpleComicResponse> CreateComic(string name, string description, int createdByUserId, int status, Stream cover)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<SimpleComicResponse> UpdateComic(int comicId, string name, string description, int createdByUserId, int status, Stream cover)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task DeleteComic(int comicId, int requestingUserId)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public async Task CreateComicIssue(int comicId, int requestingUserId, ComicIssue issue)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task UpdateComicIssue(int comicId, int requestingUserId, ComicIssue issue)
+        {
+            throw new NotImplementedException();
+        }
+        
+        public async Task DeleteComicIssue()
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public async Task<ComicPage> CreateComicPage(int comicId, int issueId, ComicPage page)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task UpdateComicPage(int comicId, int issueId, ComicPage page)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task DeleteComicPage(int pageId, int userId)
+        {
+            throw new NotImplementedException();
+        }
+
+
+
 
     }
 }
