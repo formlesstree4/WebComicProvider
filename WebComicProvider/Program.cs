@@ -23,12 +23,4 @@ builder.Services.AddScoped<AuthenticationStateProvider>(s => s.GetRequiredServic
 builder.Services.AddScoped<ApiCommunicationService>();
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddAuthorizationCore();
-
-//builder.Services.AddAuthentication();
-//builder.Services.AddOidcAuthentication(options =>
-//{
-//    // Configure your authentication provider options here.
-//    // For more information, see https://aka.ms/blazor-standalone-auth
-//    builder.Configuration.Bind("Google", options.ProviderOptions);
-//});
 await builder.Build().RunAsync();
