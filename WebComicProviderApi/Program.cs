@@ -12,28 +12,27 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+// Register Managers
+builder.Services.AddScoped<IUserTokenManager, UserTokenManager>();
 builder.Services.AddStackExchangeRedisCache(options =>
 {
     options.Configuration = builder.Configuration.GetConnectionString("Redis");
     options.InstanceName = "WebComicApi";
 });
 
-// Register Managers
-builder.Services.AddScoped<IUserManager, UserManager>();
-builder.Services.AddScoped<IUserTokenManager, UserTokenManager>();
-builder.Services.AddScoped<IComicsManager, ComicsManager>();
-
-// Register Repositories
-builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<IComicRepository, ComicRepository>();
-
 // build this early
 #pragma warning disable ASP0000 // Do not call 'IServiceCollection.BuildServiceProvider' in 'ConfigureServices'
 var sp = builder.Services.BuildServiceProvider();
 #pragma warning restore ASP0000 // Do not call 'IServiceCollection.BuildServiceProvider' in 'ConfigureServices'
+
+
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<IUserManager, UserManager>();
+builder.Services.AddScoped<IComicsManager, ComicsManager>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IComicRepository, ComicRepository>();
 
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
