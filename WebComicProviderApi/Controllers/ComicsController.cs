@@ -62,7 +62,7 @@ namespace WebComicProviderApi.Controllers
         public async Task<IActionResult> GetComicStatuses()
         {
             var statuses = await comicsManager.GetStatuses();
-            return Ok(statuses.Select(s => new { Id = (int)s, Status = s.ToString() }));
+            return Ok(statuses.Select(s => new { Id = (int)s, Status = s.GetDescription() }));
         }
 
 
