@@ -38,8 +38,7 @@ namespace WebComicProviderApi.Controllers
             {
                 return Unauthorized();
             }
-
-            var token = CreateToken(loginRequest.UserName, authentication.Item2.Email, authentication.Item2.UserRoles);
+            var token = CreateToken(loginRequest.UserName, authentication.Item2.Email, authentication.Item2.UserId, authentication.Item2.UserRoles);
             var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
             authentication.Item2.Token = tokenString;
             await userTokenManager.CreateSession(authentication.Item2.Username, authentication.Item2);
@@ -76,12 +75,13 @@ namespace WebComicProviderApi.Controllers
         {
             var username = User.GetUsername();
             var email = User.GetEmail();
+            var userId = User.GetUserId();
 
-            if (username is null || email is null) return BadRequest();
+            if (username is null || email is null || userId is null) return BadRequest();
             var session = await userTokenManager.GetSession(username);
             if (session is null) return Unauthorized();
 
-            var token = CreateToken(username, email, session.UserRoles);
+            var token = CreateToken(username, email, userId.Value, session.UserRoles);
             var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
             await userTokenManager.UpdateSessionToken(username, tokenString);
             return Ok(new
@@ -103,12 +103,13 @@ namespace WebComicProviderApi.Controllers
         }
 
 
-        private JwtSecurityToken CreateToken(string username, string email, IEnumerable<string> roles)
+        private JwtSecurityToken CreateToken(string username, string email, int userId, IEnumerable<string> roles)
         {
             var claims = new[]
             {
                 new Claim("Username", username),
                 new Claim("Email", email),
+                new Claim("UserId", userId.ToString()),
                 new Claim(ClaimTypes.Name, username),
                 new Claim(ClaimTypes.Role, string.Join(',', roles)),
                 new Claim(ClaimTypes.Authentication, "true")

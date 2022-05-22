@@ -23,5 +23,11 @@ namespace WebComicProvider.Domain.Repositories.Interfaces
         /// </summary>
         /// <returns>A collection of comic book entities</returns>
         Task<IEnumerable<ComicModel>> GetAllComics();
+
+        /// <summary>
+        /// Gets the collection of valid comic statuses
+        /// </summary>
+        /// <returns>A collection of tuples where the string is the status name and the integer is the status ID</returns>
+        Task<IEnumerable<StatusModel>> GetComicStatuses();
     }
 }

@@ -1,4 +1,5 @@
-﻿using WebComicProvider.Domain.Repositories.Interfaces;
+﻿using WebComicProvider.Domain;
+using WebComicProvider.Domain.Repositories.Interfaces;
 using WebComicProvider.Interfaces;
 using WebComicProvider.Models.Comics;
 
@@ -122,7 +123,7 @@ namespace WebComicProviderApi.Managers.Comics
             throw new NotImplementedException();
         }
         
-        public async Task DeleteComicIssue()
+        public async Task DeleteComicIssue(int comicId, int issueId, int requestingUserId)
         {
             throw new NotImplementedException();
         }
@@ -143,8 +144,12 @@ namespace WebComicProviderApi.Managers.Comics
             throw new NotImplementedException();
         }
 
-
-
+        public async Task<IEnumerable<Statuses>> GetStatuses()
+        {
+            var statuses = await comicRepository.GetComicStatuses();
+            return statuses.Select(s => (Statuses)s.StatusId);
+        }
 
     }
+
 }

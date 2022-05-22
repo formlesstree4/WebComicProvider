@@ -44,5 +44,13 @@ namespace WebComicProvider.Domain.Repositories.Comics
             using var transaction = await connection.BeginTransactionAsync();
             return await connection.QueryFirstAsync<ComicModel>("spGetComicDetails", new { comicId }, transaction, commandType: System.Data.CommandType.StoredProcedure);
         }
+
+        public async Task<IEnumerable<StatusModel>> GetComicStatuses()
+        {
+            using var connection = GetConnection();
+            await connection.OpenAsync();
+            using var transaction = await connection.BeginTransactionAsync();
+            return await connection.QueryAsync<StatusModel>("spGetStatuses", new { statusType = StatusTypes.Comic }, transaction, commandType: System.Data.CommandType.StoredProcedure);
+        }
     }
 }

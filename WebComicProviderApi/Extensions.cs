@@ -109,6 +109,22 @@ namespace WebComicProviderApi
         /// <returns></returns>
         public static string? GetEmail(this ClaimsPrincipal principal) => principal.FindFirst("Email")?.Value;
 
+        /// <summary>
+        /// Retrieves the UserId from the current <see cref="ClaimsPrincipal"/>
+        /// </summary>
+        /// <param name="principal"><see cref="ClaimsPrincipal"/></param>
+        /// <returns>The UserId</returns>
+        public static int? GetUserId(this ClaimsPrincipal principal)
+        {
+            var rawUserId = principal.FindFirst("UserId")?.Value;
+            if (rawUserId is null) return null;
+            if (int.TryParse(rawUserId, out var userId))
+            {
+                return userId;
+            }
+            return null;
+        }
+
 
 
         private static SymmetricSecurityKey CreateSigningKey(string secret)
