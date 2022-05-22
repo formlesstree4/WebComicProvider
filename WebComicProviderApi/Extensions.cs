@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using System.ComponentModel;
 using System.IdentityModel.Tokens.Jwt;
+using System.Reflection;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
@@ -125,6 +127,22 @@ namespace WebComicProviderApi
             return null;
         }
 
+        /// <summary>
+        /// Returns the value of the Description attribute if present for a given type
+        /// </summary>
+        /// <typeparam name="T">Type</typeparam>
+        /// <param name="source">The source value</param>
+        /// <returns></returns>
+        public static string GetDescription<T>(this T source)
+        {
+            FieldInfo fi = source.GetType().GetField(source.ToString());
+
+            DescriptionAttribute[] attributes = (DescriptionAttribute[])fi.GetCustomAttributes(
+                typeof(DescriptionAttribute), false);
+
+            if (attributes != null && attributes.Length > 0) return attributes[0].Description;
+            else return source.ToString();
+        }
 
 
         private static SymmetricSecurityKey CreateSigningKey(string secret)
