@@ -27,6 +27,10 @@ builder.Services.AddStackExchangeRedisCache(options =>
 var sp = builder.Services.BuildServiceProvider();
 #pragma warning restore ASP0000 // Do not call 'IServiceCollection.BuildServiceProvider' in 'ConfigureServices'
 
+builder.Services
+    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearerConfiguration(sp.GetRequiredService<IConfiguration>(), sp.GetRequiredService<IUserTokenManager>());
+
 builder.Services.Configure<FormOptions>(o =>
 {
     o.ValueLengthLimit = int.MaxValue;
@@ -54,9 +58,6 @@ builder.Services.AddScoped<IImageManager>(m =>
     };
 });
 
-builder.Services
-    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearerConfiguration(sp.GetRequiredService<IConfiguration>(), sp.GetRequiredService<IUserTokenManager>());
 
 var app = builder.Build();
 
