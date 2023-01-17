@@ -34,7 +34,7 @@ namespace WebComicProvider.Interfaces
         /// <param name="status">The current status ID of the comic</param>
         /// <param name="cover">The Image <see cref="Stream"/> that is the cover</param>
         /// <returns><see cref="SimpleComicResponse"/></returns>
-        Task<SimpleComicResponse> CreateComic(string name, string description, int createdByUserId, int status, Stream cover);
+        Task<SimpleComicResponse> CreateComic(string name, string description, int createdByUserId, int status, Stream cover, string coverName);
 
         /// <summary>
         /// Updates an existing comic with some new details
@@ -46,7 +46,7 @@ namespace WebComicProvider.Interfaces
         /// <param name="status">The current status ID of the comic</param>
         /// <param name="cover">The Image <see cref="Stream"/> that is the cover</param>
         /// <returns><see cref="SimpleComicResponse"/></returns>
-        Task<SimpleComicResponse> UpdateComic(int comicId, string name, string description, int createdByUserId, int status, Stream cover);
+        Task<SimpleComicResponse> UpdateComic(int comicId, string name, string description, int createdByUserId, int status, Stream cover, string coverName);
 
         /// <summary>
         /// Deletes an existing comic

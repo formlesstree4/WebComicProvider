@@ -52,5 +52,59 @@ namespace WebComicProvider.Domain.Repositories.Comics
             using var transaction = await connection.BeginTransactionAsync();
             return await connection.QueryAsync<StatusModel>("spGetStatuses", new { statusType = StatusTypes.Comic }, transaction, commandType: System.Data.CommandType.StoredProcedure);
         }
+
+        public async Task<int> SaveComic(ComicModel comic)
+        {
+            using var connection = GetConnection();
+            await connection.OpenAsync();
+            using var transaction = await connection.BeginTransactionAsync();
+            var comicId = await connection.QueryFirstAsync<int>("spCreateComic", new
+            {
+                userId = comic.CreatedBy,
+                name = comic.Name,
+                description = comic.Description,
+                status = comic.Status,
+                cover = comic.Cover
+            }, transaction, commandType: System.Data.CommandType.StoredProcedure);
+            await transaction.CommitAsync();
+            return comicId;
+        }
+
+        public async Task<int> SaveIssue(int comicId, IssueModel issue)
+        {
+            using var connection = GetConnection();
+            await connection.OpenAsync();
+            using var transaction = await connection.BeginTransactionAsync();
+            var issueId = await connection.QueryFirstAsync<int>("spCreateIssue", new
+            {
+                comicId = comicId,
+                name = issue.Name,
+                synopsis = issue.Synopsis,
+                status = issue.Status,
+                releaseDate = issue.ReleaseDate
+            }, transaction, commandType: System.Data.CommandType.StoredProcedure);
+            await transaction.CommitAsync();
+            return issueId;
+        }
+
+        public async Task<int> SavePage(int comicId, int issueId, PageModel page)
+        {
+            using var connection = GetConnection();
+            await connection.OpenAsync();
+            using var transaction = await connection.BeginTransactionAsync();
+            var pageId = await connection.QueryFirstAsync<int>("spCreatePage", new
+            {
+                issueId = issueId,
+                title = page.Title,
+                toolTip = page.ToolTip,
+                commentary = page.Commentary,
+                status = page.Status,
+                location = page.Location,
+                releaseDate = page.ReleaseDate
+            }, transaction, commandType: System.Data.CommandType.StoredProcedure);
+            await transaction.CommitAsync();
+            return pageId;
+        }
+
     }
 }

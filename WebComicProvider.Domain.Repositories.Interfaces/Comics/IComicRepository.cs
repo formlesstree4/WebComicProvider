@@ -29,5 +29,8 @@ namespace WebComicProvider.Domain.Repositories.Interfaces
         /// </summary>
         /// <returns>A collection of tuples where the string is the status name and the integer is the status ID</returns>
         Task<IEnumerable<StatusModel>> GetComicStatuses();
+        Task<int> SaveComic(ComicModel comic);
+        Task<int> SaveIssue(int comicId, IssueModel issue);
+        Task<int> SavePage(int comicId, int issueId, PageModel page);
     }
 }

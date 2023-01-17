@@ -13,9 +13,9 @@ namespace WebComicProvider.Interfaces
         /// Saves an image to a remote destination and returns a key that can be used to uniquely identify the image
         /// </summary>
         /// <param name="imageStream"><see cref="Stream"/></param>
-        /// <param name="format">The format, or extension, to save as</param>
+        /// <param name="extension">The format, or extension, to save as</param>
         /// <returns><see cref="ImageMetaData"/></returns>
-        Task<ImageMetaData> SaveImage(Stream imageStream, string format);
+        Task<ImageMetaData> SaveImage(Stream imageStream, string extension);
 
         /// <summary>
         /// Retrieves the metadata about a given image
@@ -29,7 +29,7 @@ namespace WebComicProvider.Interfaces
         /// </summary>
         /// <param name="imageId">The unique ID for the image</param>
         /// <returns><see cref="Stream"/></returns>
-        Task<Stream> LoadImage(string imageId);
+        Stream OpenImage(string imageId);
 
         /// <summary>
         /// Deletes a given image from the server

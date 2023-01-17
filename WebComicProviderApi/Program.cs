@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Features;
+using Microsoft.Extensions.FileProviders;
 using WebComicProvider.Domain.Repositories.Comics;
 using WebComicProvider.Domain.Repositories.Interfaces;
 using WebComicProvider.Domain.Repositories.Interfaces.Users;
@@ -26,7 +27,6 @@ builder.Services.AddStackExchangeRedisCache(options =>
 #pragma warning disable ASP0000 // Do not call 'IServiceCollection.BuildServiceProvider' in 'ConfigureServices'
 var sp = builder.Services.BuildServiceProvider();
 #pragma warning restore ASP0000 // Do not call 'IServiceCollection.BuildServiceProvider' in 'ConfigureServices'
-
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearerConfiguration(sp.GetRequiredService<IConfiguration>(), sp.GetRequiredService<IUserTokenManager>());
@@ -74,6 +74,12 @@ app.UseCors(builder =>
     .AllowAnyOrigin();
 });
 
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+        Path.Combine(app.Environment.ContentRootPath, "MyStaticFiles")),
+    RequestPath = "/StaticFiles"
+});
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseHttpsRedirection();

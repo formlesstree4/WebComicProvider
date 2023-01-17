@@ -6,7 +6,7 @@ using WebComicProvider.Interfaces;
 namespace WebComicProviderApi.Controllers
 {
 
-    [ApiController, AllowAnonymous]
+    [ApiController]
     [Route("api/[controller]")]
     public class ComicsController : WebComicProviderApiControllerBase
     {
@@ -21,28 +21,27 @@ namespace WebComicProviderApi.Controllers
 
 
 
-        [HttpGet]
+        [HttpGet, AllowAnonymous]
         public async Task<IActionResult> Get()
         {
             return Ok(await comicsManager.GetAllComics());
         }
 
-        [HttpGet("{comicId:int}")]
+        [HttpGet("{comicId:int}"), AllowAnonymous]
         public async Task<IActionResult> GetComicDetails(int comicId)
         {
             return Ok(await comicsManager.GetComicDetails(comicId));
         }
 
-        [HttpGet("{comicId:int}/cover")]
+        [HttpGet("{comicId:int}/cover"), AllowAnonymous]
         public async Task<IActionResult> GetComicCover(int comicId)
         {
             var details = await comicsManager.GetComicDetails(comicId);
             var imageMetadata = await imageManager.GetImageMetaData(details.Metadata.Cover);
-            using var image = await imageManager.LoadImage(details.Metadata.Cover);
-            return File(image, imageMetadata.MimeType);
+            return File(imageManager.OpenImage(details.Metadata.Cover), imageMetadata.MimeType);
         }
 
-        [HttpGet("{comicId:int}/{issueId:int}/{pageId:int}/image")]
+        [HttpGet("{comicId:int}/{issueId:int}/{pageId:int}/image"), AllowAnonymous]
         public async Task<IActionResult> GetPageImage(int comicId, int issueId, int pageId)
         {
             var details = await comicsManager.GetComicDetails(comicId);
@@ -53,12 +52,10 @@ namespace WebComicProviderApi.Controllers
             if (page is null || page.Location is null) return BadRequest();
 
             var imageMetadata = await imageManager.GetImageMetaData(page.Location);
-            using var image = await imageManager.LoadImage(page.Location);
-
-            return File(image, imageMetadata.MimeType);
+            return File(imageManager.OpenImage(page.Location), imageMetadata.MimeType);
         }
 
-        [HttpGet("statuses")]
+        [HttpGet("statuses"), AllowAnonymous]
         public async Task<IActionResult> GetComicStatuses()
         {
             var statuses = await comicsManager.GetStatuses();
@@ -96,7 +93,7 @@ namespace WebComicProviderApi.Controllers
             }
 
             using var imageStream = formCollection.Files[0].OpenReadStream();
-            var savedComic = await comicsManager.CreateComic(name, description, userId.Value, (int)Statuses.ComicActive, imageStream);
+            var savedComic = await comicsManager.CreateComic(name, description, userId.Value, (int)Statuses.ComicActive, imageStream, formCollection.Files[0].FileName);
             return Ok(savedComic);
         }
 

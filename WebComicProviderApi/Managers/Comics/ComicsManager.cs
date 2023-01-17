@@ -1,4 +1,5 @@
 ﻿using WebComicProvider.Domain;
+using WebComicProvider.Domain.Comics;
 using WebComicProvider.Domain.Repositories.Interfaces;
 using WebComicProvider.Interfaces;
 using WebComicProvider.Models.Comics;
@@ -9,13 +10,13 @@ namespace WebComicProviderApi.Managers.Comics
     {
         private readonly IComicRepository comicRepository;
         private readonly IUserManager userManager;
-        private readonly IWebHostEnvironment environment;
+        private readonly IImageManager imageManager;
 
-        public ComicsManager(IComicRepository comicRepository, IUserManager userManager, IWebHostEnvironment environment)
+        public ComicsManager(IComicRepository comicRepository, IUserManager userManager, IImageManager imageManager)
         {
             this.comicRepository = comicRepository;
             this.userManager = userManager;
-            this.environment = environment;
+            this.imageManager = imageManager;
         }
 
 
@@ -97,12 +98,15 @@ namespace WebComicProviderApi.Managers.Comics
         
 
 
-        public async Task<SimpleComicResponse> CreateComic(string name, string description, int createdByUserId, int status, Stream cover)
+        public async Task<SimpleComicResponse> CreateComic(string name, string description, int createdByUserId, int status, Stream cover, string coverName)
         {
-            throw new NotImplementedException();
+            var imageData = await imageManager.SaveImage(cover, Path.GetExtension(coverName));
+            var comicModel = new ComicModel(default, name, description, createdByUserId, DateTimeOffset.Now, DateTimeOffset.Now, status, imageData.ImageId, default, default);
+            var comicId = await comicRepository.SaveComic(comicModel);
+            return await GetSimpleComicDetails(comicId);
         }
 
-        public async Task<SimpleComicResponse> UpdateComic(int comicId, string name, string description, int createdByUserId, int status, Stream cover)
+        public async Task<SimpleComicResponse> UpdateComic(int comicId, string name, string description, int createdByUserId, int status, Stream cover, string coverName)
         {
             throw new NotImplementedException();
         }

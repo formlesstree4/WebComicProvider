@@ -16,7 +16,7 @@ namespace WebComicProviderApi.Managers
             {
                 throw new ArgumentException($"{nameof(LocalImageManager)} was instantiated when it should not be", nameof(configuration));
             }
-            _baseFolder = Path.Combine(environment.ContentRootPath, configuration["Storage:Local:Subfolder"]);
+            _baseFolder = Path.Combine(environment.WebRootPath, configuration["Storage:Local:Subfolder"]);
         }
 
 
@@ -28,31 +28,35 @@ namespace WebComicProviderApi.Managers
 
         public async Task<ImageMetaData> GetImageMetaData(string imageId)
         {
-            var imageData = await LoadImage(imageId);
-            return new ImageMetaData
+            var imageData = OpenImage(imageId);
+            return await Task.FromResult(new ImageMetaData
             {
-                Hash = (await Extensions.CalculateImageHashBytes(imageData)).BytesToString(),
+                Hash = Extensions.CalculateImageHashBytes(imageData).BytesToString(),
                 ImageId = imageId,
                 MimeType = MimeTypes.GetMimeType(imageId)
-            };
+            });
         }
 
-        public Task<Stream> LoadImage(string imageId)
+        public Stream OpenImage(string imageId)
         {
-            return Task.FromResult(new FileStream(Path.Combine(_baseFolder, imageId), FileMode.Open, FileAccess.Read) as Stream);
+            return new FileStream(Path.Combine(_baseFolder, imageId), FileMode.Open, FileAccess.Read) as Stream;
         }
 
-        public async Task<ImageMetaData> SaveImage(Stream imageStream, string format)
+        public async Task<ImageMetaData> SaveImage(Stream imageStream, string extension)
         {
-            var imageId = $"{Guid.NewGuid()}.{format}";
-            using var writer = new FileStream(Path.Combine(_baseFolder, imageId), FileMode.CreateNew, FileAccess.ReadWrite);
+            var imageId = $"{Guid.NewGuid()}{extension}";
+            var path = Path.Combine(_baseFolder, imageId);
+            using var writer = new FileStream(path, FileMode.CreateNew, FileAccess.ReadWrite);
             await imageStream.CopyToAsync(writer);
+            writer.Close();
+            using var reader = new FileStream(path, FileMode.Open, FileAccess.Read);
             return new ImageMetaData
             {
-                Hash = (await Extensions.CalculateImageHashBytes(imageStream)).BytesToString(),
+                Hash = Extensions.CalculateImageHashBytes(reader).BytesToString(),
                 ImageId = imageId,
                 MimeType = MimeTypes.GetMimeType(imageId)
             };
+
         }
     }
 }

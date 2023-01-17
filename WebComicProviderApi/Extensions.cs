@@ -77,6 +77,7 @@ namespace WebComicProviderApi
                         if (context.AuthenticateFailure != null && context.AuthenticateFailure is SecurityTokenExpiredException authenticationException)
                         {
                             context.Response.Headers.Add("x-token-expired", authenticationException.Expires.ToString("o"));
+                            context.Response.Headers.Add("token-expired", "true");
                             context.ErrorDescription = $"The token expired on {authenticationException.Expires:o}";
                         }
 
@@ -85,7 +86,25 @@ namespace WebComicProviderApi
                             error = context.Error,
                             error_description = context.ErrorDescription
                         }));
-                    }
+                    },
+                    //OnAuthenticationFailed = context =>
+                    //{
+                    //    context.Fail("The access token provided is not valid.");
+                    //    context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                    //    context.Response.ContentType = "application/json";
+
+                    //    string response =
+                    //        JsonSerializer.Serialize("The access token provided is not valid.");
+                    //    if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
+                    //    {
+                    //        context.Response.Headers.Add("Token-Expired", "true");
+                    //        response =
+                    //            JsonSerializer.Serialize("The access token provided has expired.");
+                    //    }
+
+                    //    context.Response.WriteAsync(response);
+                    //    return Task.CompletedTask;
+                    //}
                 };
             });
         }
@@ -158,10 +177,10 @@ namespace WebComicProviderApi
 
         public static Task MoveAsync(string sourceFileName, string destFileName) => Task.Run(() => { File.Move(sourceFileName, destFileName); });
 
-        public static Task<byte[]> CalculateImageHashBytes(Stream image)
+        public static byte[] CalculateImageHashBytes(Stream image)
         {
             using var hasher = SHA512.Create();
-            return Task.Run(() => hasher.ComputeHash(image));
+            return hasher.ComputeHash(image);
         }
 
         public static string BytesToString(this byte[] b) => Encoding.UTF8.GetString(b);

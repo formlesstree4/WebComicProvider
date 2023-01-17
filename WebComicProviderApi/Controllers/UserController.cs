@@ -12,7 +12,6 @@ namespace WebComicProviderApi.Controllers
 
     [ApiController]
     [Route("api/[controller]/[action]")]
-    [Authorize]
     public sealed class UserController : WebComicProviderApiControllerBase
     {
         private readonly IConfiguration configuration;
@@ -56,7 +55,7 @@ namespace WebComicProviderApi.Controllers
             return result.Success ? Ok(result) : BadRequest(result.ErrorMessage);
         }
 
-        [HttpGet]
+        [HttpGet, Authorize]
         public async Task<IActionResult> Profile()
         {
             var username = User.GetUsername();
@@ -64,13 +63,13 @@ namespace WebComicProviderApi.Controllers
             return Ok(await userTokenManager.GetSession(username));
         }
 
-        [HttpPut]
+        [HttpPut, Authorize]
         public IActionResult Profile([FromBody] UpdateUserProfileRequest profile)
         {
             return NotImplemented();
         }
 
-        [HttpGet]
+        [HttpGet, Authorize]
         public async Task<IActionResult> Refresh()
         {
             var username = User.GetUsername();
@@ -90,7 +89,7 @@ namespace WebComicProviderApi.Controllers
             });
         }
 
-        [HttpDelete]
+        [HttpDelete, Authorize]
         public async Task<IActionResult> Logout()
         {
             var username = User.GetUsername();
